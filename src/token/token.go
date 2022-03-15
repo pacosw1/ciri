@@ -18,11 +18,9 @@ type Keyword struct {
 	Type  Type
 }
 
-var complexKeywords = []Keyword{
-	Keyword{Regex: "[a-zA-Z](a-zA-Z]|[0-9])*", Type: ID},
-	Keyword{Regex: "[+-]?([0-9]*[.])[0-9]+", Type: FLOAT},
-	Keyword{Regex: "[-+]?[0-9]+", Type: INT},
-}
+var IDENT = Keyword{Regex: "[a-zA-Z](a-zA-Z]|[0-9])*", Type: ID}
+var FLOAT_IDENT = Keyword{Regex: "[+-]?([0-9]*[.])[0-9]+", Type: FLOAT}
+var INT_IDENT = Keyword{Regex: "[-+]?[0-9]+", Type: INT}
 
 var simpleKeywords = map[string]Keyword{
 	"var":     Keyword{Type: VAR},
@@ -81,14 +79,13 @@ const (
 	FLOAT      = "FLOAT"
 )
 
-func LookUpComplexKeywords(potentialKeyword string) Type {
-	for _, keyword := range complexKeywords {
-		valid, err := regexp.MatchString(keyword.Regex, potentialKeyword)
-		if valid && err == nil {
-			return keyword.Type
-		}
+func LookupIdentifier(keyword Keyword, potentialKeyword string) Type {
+	valid, err := regexp.MatchString(keyword.Regex, potentialKeyword)
+	if valid && err == nil {
+		return keyword.Type
 	}
 	return ILLEGAL
+
 }
 
 func LookupSimpleKeyword(ident string) Type {
