@@ -1,4 +1,4 @@
-package lexer
+package goyacc
 
 import (
 	"ciri/src/token"

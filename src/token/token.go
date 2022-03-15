@@ -11,6 +11,7 @@ type Token struct {
 	LineNumber      uint32
 	CharacterNumber uint32
 	Literal         string
+	IsKeyword       bool
 }
 
 type Keyword struct {
@@ -33,19 +34,13 @@ var simpleKeywords = map[string]Keyword{
 	"if":      Keyword{Type: IF},
 	"else":    Keyword{Type: ELSE},
 	"print":   Keyword{Type: PRINT},
-	"return":  Keyword{Type: RETURN},
 }
 
 const (
-	FUNCTION = "FUNCTION"
-	LET      = "LET"
-	TRUE     = "TRUE"
-	FALSE    = "FALSE"
-	IF       = "IF"
-	ELSE     = "ELSE"
-	RETURN   = "RETURN"
-	DIGIT    = "DIGIT"
-	NUMBER   = "NUMBER"
+	TRUE  = "TRUE"
+	FALSE = "FALSE"
+	IF    = "IF"
+	ELSE  = "ELSE"
 
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
@@ -72,6 +67,7 @@ const (
 	VAR     = "VAR"
 	ID      = "ID"
 	PRINT   = "PRINT"
+	STRING  = "STRING"
 
 	INT_TYPE   = "INT_TYPE"
 	FLOAT_TYPE = "FLOAT_TYPE"

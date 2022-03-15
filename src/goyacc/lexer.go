@@ -1,4 +1,4 @@
-package lexer
+package goyacc
 
 import (
 	"ciri/src/token"
@@ -12,13 +12,13 @@ type Lexer struct {
 	nextPosition  int
 	current       byte
 	lineNumber    uint32
-	tokens        []token.Token
+	Tokens        []token.Token
 	lastReadToken token.Token
 	err           error
 }
 
 func New(input string) *Lexer {
-	lexer := &Lexer{input: input, lineNumber: 0, tokens: make([]token.Token, 0)}
+	lexer := &Lexer{input: input, lineNumber: 0, Tokens: make([]token.Token, 0)}
 	lexer.readChar()
 	return lexer
 }
@@ -75,7 +75,7 @@ func (l *Lexer) NextToken() token.Token {
 	if !t.IsKeyword {
 		l.readChar()
 	}
-	l.tokens = append(l.tokens, t)
+	l.Tokens = append(l.Tokens, t)
 	l.lastReadToken = t
 	return t
 }
@@ -105,10 +105,6 @@ func isDigit(ch byte) bool {
 
 //Yacc interface
 
-func (l *Lexer) Tokens() []token.Token {
-	return l.tokens
-}
-
 func (l *Lexer) GetError() error {
 	return l.err
 }
@@ -119,8 +115,8 @@ func (l *Lexer) Error(s string) {
 }
 
 func (l *Lexer) formatError() string {
-	//show last 5 tokens
-	tokens := l.Tokens()
+	//show last 5 Tokens
+	tokens := l.Tokens
 	output := ""
 	var tok token.Token
 	pos := len(tokens) - 5
@@ -142,7 +138,7 @@ func (l *Lexer) formatError() string {
 // Lookups
 
 func (l *Lexer) lookupKeyword() token.Token {
-	copy := l.makeCopy()
+	lexCopy := l.makeCopy()
 
 	potentialKeyword := readWord(l)
 	tokenType := token.LookupSimpleKeyword(potentialKeyword)
@@ -150,7 +146,7 @@ func (l *Lexer) lookupKeyword() token.Token {
 		return l.newKeywordToken(tokenType, potentialKeyword)
 	}
 
-	l.resetLookup(copy)
+	l.resetLookup(lexCopy)
 	potentialId := readAlphaNumeric(l)
 	tokenType = token.LookupIdentifier(token.IDENT, potentialId)
 	if tokenType != token.ILLEGAL {
@@ -177,7 +173,7 @@ func (l *Lexer) lookupString() token.Token {
 }
 
 func (l *Lexer) lookupNumerics() token.Token {
-	copy := l.makeCopy()
+	lexCopy := l.makeCopy()
 	potentialFloat := readFloat(l)
 
 	tokenType := token.LookupIdentifier(token.FLOAT_IDENT, potentialFloat)
@@ -185,7 +181,7 @@ func (l *Lexer) lookupNumerics() token.Token {
 		return l.newKeywordToken(tokenType, potentialFloat)
 	}
 
-	l.resetLookup(copy)
+	l.resetLookup(lexCopy)
 	potentialInt := readInt(l)
 	tokenType = token.LookupIdentifier(token.INT_IDENT, potentialInt)
 	if tokenType != token.ILLEGAL {
@@ -306,4 +302,90 @@ func (l *Lexer) readRawString() (string, bool) {
 	}
 
 	return output, unclosedError
+}
+
+//Lex interface for yacc, return generated types
+func (l *Lexer) Lex(parserVal *yySymType) int {
+	tok := l.NextToken()
+
+	switch tok.Type {
+	case token.VAR:
+		parserVal.St = tok.Literal
+		return VAR
+	case token.ID:
+		parserVal.St = tok.Literal
+		return ID
+	case token.FLOAT_TYPE:
+		parserVal.St = tok.Literal
+		return FLOAT_TYPE
+	case token.INT_TYPE:
+		parserVal.St = tok.Literal
+		return INT_TYPE
+	case token.IF:
+		parserVal.St = tok.Literal
+		return IF
+	case token.ELSE:
+		parserVal.St = tok.Literal
+		return ELSE
+	case token.PROGRAM:
+		parserVal.St = tok.Literal
+		return PROGRAM
+	case token.PRINT:
+		parserVal.St = tok.Literal
+		return PRINT
+	case token.COLON:
+		parserVal.St = tok.Literal
+		return ':'
+	case token.COMMA:
+		parserVal.St = tok.Literal
+		return ','
+	case token.OPEN_BRACE:
+		parserVal.St = tok.Literal
+		return '{'
+	case token.PLUS:
+		parserVal.St = tok.Literal
+		return '+'
+	case token.MINUS:
+		parserVal.St = tok.Literal
+		return '-'
+	case token.DIVIDE:
+		parserVal.St = tok.Literal
+		return '/'
+	case token.MULTIPLY:
+		parserVal.St = tok.Literal
+		return '*'
+	case token.CLOSED_BRACE:
+		parserVal.St = tok.Literal
+		return '}'
+	case token.ASSIGN:
+		parserVal.St = tok.Literal
+		return '='
+	case token.OPEN_PARENTHESIS:
+		parserVal.St = tok.Literal
+		return '('
+	case token.CLOSED_PARENTHESIS:
+		parserVal.St = tok.Literal
+		return ')'
+	case token.INT:
+		parserVal.St = tok.Literal
+		return CTE_I
+	case token.SEMICOLON:
+		parserVal.St = tok.Literal
+		return ';'
+	case token.LESS_THAN:
+		parserVal.St = tok.Literal
+		return '<'
+	case token.GREATER_THAN:
+		parserVal.St = tok.Literal
+		return '>'
+	case token.STRING:
+		parserVal.St = tok.Literal
+		return CTE_STRING
+	case token.FLOAT:
+		parserVal.St = tok.Literal
+		return CTE_F
+	default:
+		return int(tok.LineNumber)
+	}
+
 }
