@@ -304,7 +304,6 @@ func (l *Lexer) readRawString() (string, bool) {
 	return output, unclosedError
 }
 
-//Lex interface for yacc, return generated types
 func (l *Lexer) Lex(parserVal *yySymType) int {
 	tok := l.NextToken()
 

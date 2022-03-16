@@ -1,5 +1,5 @@
 %{
-package parser
+package goyacc
 
 import (
 	"ciri/src/token"
@@ -35,6 +35,13 @@ func setResult(l yyLexer, v []token.Token) {
 	PROGRAM
 	PRINT
 
+%left '|'
+%left '&'
+%left '+'  '-'
+%left '*'  '/'  '%'
+%left UMINUS      /*  supplies  precedence  for  unary  minus  */
+
+
 %start programa
 
 %%
@@ -58,6 +65,8 @@ estatuto: assign
 	| condition
 	| print
 
+
+
 condition: IF '(' expresion ')' bloque elseBlock ';'
 elseBlock: ELSE bloque
 	 |
@@ -79,6 +88,7 @@ varCte: ID
        | CTE_F
 
 
+
 factor: '(' expresion ')'
       | cteExp
 cteExp: varCte
@@ -90,14 +100,18 @@ nextFactor: factor
 	  | factor '/' termino
 	  | factor '*' termino
 
-exp: termino nextTerm
-nextTerm: '+' termino nextTerm
-	| '-' termino nextTerm
-	|
+
+exp: termino '+' otherTerm
+	| termino '-' otherTerm
+
+otherTerm: termino
+	 |
 
 
-expresion: nextExp
+expresion: exp
+	 | nextExp
+
 nextExp: exp '>' exp
        | exp '<' exp
-       | exp
+
 
