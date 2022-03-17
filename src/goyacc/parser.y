@@ -82,12 +82,9 @@ nextPrint: ',' nextPrintExp nextPrint
 tipo: INT_TYPE
     | FLOAT_TYPE
 
-
 varCte: ID
        | CTE_I
        | CTE_F
-
-
 
 factor: '(' expresion ')'
       | cteExp

@@ -63,10 +63,10 @@ const (
 	ASSIGN    = "="
 	COLON     = ":"
 
-	PROGRAM = "PROGRAM"
-	VAR     = "VAR"
+	PROGRAM = "program"
+	VAR     = "var"
 	ID      = "ID"
-	PRINT   = "PRINT"
+	PRINT   = "print"
 	STRING  = "STRING"
 
 	INT_TYPE   = "INT_TYPE"
