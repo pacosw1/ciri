@@ -1,1 +1,9 @@
 .idea
+
+.DS_Store
+PLY/parser.pyc
+PLY/parsetab.py
+PLY/parsetab.pyc
+src/lexer/yaccAdapter.go
+src/lexing/
+virus/
