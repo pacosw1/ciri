@@ -107,6 +107,9 @@ def p_nextTerm(p):
         |'''
 
 
+def p_error(p):
+    print(p.value)
+
 def p_expresion(p):
     '''expresion : nextExp'''
 
