@@ -1,0 +1,1315 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID COLON vars bloque
+Rule 2     vars -> VAR allVars
+Rule 3     vars -> <empty>
+Rule 4     allVars -> nextId COLON tipo SEMICOLON nextVar
+Rule 5     nextId -> ID
+Rule 6     nextId -> ID COMMA nextId
+Rule 7     nextVar -> allVars
+Rule 8     nextVar -> <empty>
+Rule 9     bloque -> LBRACE nextStatuto RBRACE
+Rule 10    nextStatuto -> estatuto nextStatuto
+Rule 11    nextStatuto -> <empty>
+Rule 12    estatuto -> assign
+Rule 13    estatuto -> condition
+Rule 14    estatuto -> print
+Rule 15    condition -> IF LPAREN expresion RPAREN bloque elseBlock SEMICOLON
+Rule 16    elseBlock -> ELSE bloque
+Rule 17    elseBlock -> <empty>
+Rule 18    assign -> ID ASSIGN expresion SEMICOLON
+Rule 19    print -> PRINT LPAREN nextPrintExp nextPrint RPAREN SEMICOLON
+Rule 20    nextPrintExp -> expresion
+Rule 21    nextPrintExp -> CTE_STRING
+Rule 22    nextPrint -> COMMA nextPrintExp nextPrint
+Rule 23    nextPrint -> <empty>
+Rule 24    tipo -> INT_TYPE
+Rule 25    tipo -> FLOAT_TYPE
+Rule 26    varCte -> ID
+Rule 27    varCte -> INT
+Rule 28    varCte -> FLOAT
+Rule 29    factor -> LPAREN expresion RPAREN
+Rule 30    factor -> cteExp
+Rule 31    cteExp -> varCte
+Rule 32    cteExp -> PLUS varCte
+Rule 33    cteExp -> MINUS varCte
+Rule 34    termino -> nextFactor
+Rule 35    nextFactor -> factor
+Rule 36    nextFactor -> factor DIV termino
+Rule 37    nextFactor -> factor MULT termino
+Rule 38    exp -> termino nextTerm
+Rule 39    nextTerm -> PLUS termino nextTerm
+Rule 40    nextTerm -> MINUS termino nextTerm
+Rule 41    nextTerm -> <empty>
+Rule 42    expresion -> nextExp
+Rule 43    nextExp -> exp GREATER_THAN exp
+Rule 44    nextExp -> exp LESS_THAN exp
+Rule 45    nextExp -> exp LESS_GREAT exp
+Rule 46    nextExp -> exp
+
+Terminals, with rules where they appear
+
+ASSIGN               : 18
+COLON                : 1 4
+COMMA                : 6 22
+CTE_STRING           : 21
+DIV                  : 36
+ELSE                 : 16
+FLOAT                : 28
+FLOAT_TYPE           : 25
+GREATER_THAN         : 43
+ID                   : 1 5 6 18 26
+IF                   : 15
+INT                  : 27
+INT_TYPE             : 24
+LBRACE               : 9
+LESS_GREAT           : 45
+LESS_THAN            : 44
+LPAREN               : 15 19 29
+MINUS                : 33 40
+MULT                 : 37
+PLUS                 : 32 39
+PRINT                : 19
+PROGRAM              : 1
+RBRACE               : 9
+RPAREN               : 15 19 29
+SEMICOLON            : 4 15 18 19
+VAR                  : 2
+error                : 
+
+Nonterminals, with rules where they appear
+
+allVars              : 2 7
+assign               : 12
+bloque               : 1 15 16
+condition            : 13
+cteExp               : 30
+elseBlock            : 15
+estatuto             : 10
+exp                  : 43 43 44 44 45 45 46
+expresion            : 15 18 20 29
+factor               : 35 36 37
+nextExp              : 42
+nextFactor           : 34
+nextId               : 4 6
+nextPrint            : 19 22
+nextPrintExp         : 19 22
+nextStatuto          : 9 10
+nextTerm             : 38 39 40
+nextVar              : 4
+print                : 14
+program              : 0
+termino              : 36 37 38 39 40
+tipo                 : 4
+varCte               : 31 32 33
+vars                 : 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM ID COLON vars bloque
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . ID COLON vars bloque
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAM ID . COLON vars bloque
+
+    COLON           shift and go to state 4
+
+
+state 4
+
+    (1) program -> PROGRAM ID COLON . vars bloque
+    (2) vars -> . VAR allVars
+    (3) vars -> .
+
+    VAR             shift and go to state 6
+    LBRACE          reduce using rule 3 (vars -> .)
+
+    vars                           shift and go to state 5
+
+state 5
+
+    (1) program -> PROGRAM ID COLON vars . bloque
+    (9) bloque -> . LBRACE nextStatuto RBRACE
+
+    LBRACE          shift and go to state 7
+
+    bloque                         shift and go to state 8
+
+state 6
+
+    (2) vars -> VAR . allVars
+    (4) allVars -> . nextId COLON tipo SEMICOLON nextVar
+    (5) nextId -> . ID
+    (6) nextId -> . ID COMMA nextId
+
+    ID              shift and go to state 11
+
+    nextId                         shift and go to state 10
+    allVars                        shift and go to state 9
+
+state 7
+
+    (9) bloque -> LBRACE . nextStatuto RBRACE
+    (10) nextStatuto -> . estatuto nextStatuto
+    (11) nextStatuto -> .
+    (12) estatuto -> . assign
+    (13) estatuto -> . condition
+    (14) estatuto -> . print
+    (18) assign -> . ID ASSIGN expresion SEMICOLON
+    (15) condition -> . IF LPAREN expresion RPAREN bloque elseBlock SEMICOLON
+    (19) print -> . PRINT LPAREN nextPrintExp nextPrint RPAREN SEMICOLON
+
+    RBRACE          reduce using rule 11 (nextStatuto -> .)
+    ID              shift and go to state 14
+    IF              shift and go to state 19
+    PRINT           shift and go to state 15
+
+    nextStatuto                    shift and go to state 12
+    estatuto                       shift and go to state 13
+    print                          shift and go to state 16
+    assign                         shift and go to state 17
+    condition                      shift and go to state 18
+
+state 8
+
+    (1) program -> PROGRAM ID COLON vars bloque .
+
+    $end            reduce using rule 1 (program -> PROGRAM ID COLON vars bloque .)
+
+
+state 9
+
+    (2) vars -> VAR allVars .
+
+    LBRACE          reduce using rule 2 (vars -> VAR allVars .)
+
+
+state 10
+
+    (4) allVars -> nextId . COLON tipo SEMICOLON nextVar
+
+    COLON           shift and go to state 20
+
+
+state 11
+
+    (5) nextId -> ID .
+    (6) nextId -> ID . COMMA nextId
+
+    COLON           reduce using rule 5 (nextId -> ID .)
+    COMMA           shift and go to state 21
+
+
+state 12
+
+    (9) bloque -> LBRACE nextStatuto . RBRACE
+
+    RBRACE          shift and go to state 22
+
+
+state 13
+
+    (10) nextStatuto -> estatuto . nextStatuto
+    (10) nextStatuto -> . estatuto nextStatuto
+    (11) nextStatuto -> .
+    (12) estatuto -> . assign
+    (13) estatuto -> . condition
+    (14) estatuto -> . print
+    (18) assign -> . ID ASSIGN expresion SEMICOLON
+    (15) condition -> . IF LPAREN expresion RPAREN bloque elseBlock SEMICOLON
+    (19) print -> . PRINT LPAREN nextPrintExp nextPrint RPAREN SEMICOLON
+
+    RBRACE          reduce using rule 11 (nextStatuto -> .)
+    ID              shift and go to state 14
+    IF              shift and go to state 19
+    PRINT           shift and go to state 15
+
+    nextStatuto                    shift and go to state 23
+    estatuto                       shift and go to state 13
+    print                          shift and go to state 16
+    assign                         shift and go to state 17
+    condition                      shift and go to state 18
+
+state 14
+
+    (18) assign -> ID . ASSIGN expresion SEMICOLON
+
+    ASSIGN          shift and go to state 24
+
+
+state 15
+
+    (19) print -> PRINT . LPAREN nextPrintExp nextPrint RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 25
+
+
+state 16
+
+    (14) estatuto -> print .
+
+    ID              reduce using rule 14 (estatuto -> print .)
+    IF              reduce using rule 14 (estatuto -> print .)
+    PRINT           reduce using rule 14 (estatuto -> print .)
+    RBRACE          reduce using rule 14 (estatuto -> print .)
+
+
+state 17
+
+    (12) estatuto -> assign .
+
+    ID              reduce using rule 12 (estatuto -> assign .)
+    IF              reduce using rule 12 (estatuto -> assign .)
+    PRINT           reduce using rule 12 (estatuto -> assign .)
+    RBRACE          reduce using rule 12 (estatuto -> assign .)
+
+
+state 18
+
+    (13) estatuto -> condition .
+
+    ID              reduce using rule 13 (estatuto -> condition .)
+    IF              reduce using rule 13 (estatuto -> condition .)
+    PRINT           reduce using rule 13 (estatuto -> condition .)
+    RBRACE          reduce using rule 13 (estatuto -> condition .)
+
+
+state 19
+
+    (15) condition -> IF . LPAREN expresion RPAREN bloque elseBlock SEMICOLON
+
+    LPAREN          shift and go to state 26
+
+
+state 20
+
+    (4) allVars -> nextId COLON . tipo SEMICOLON nextVar
+    (24) tipo -> . INT_TYPE
+    (25) tipo -> . FLOAT_TYPE
+
+    INT_TYPE        shift and go to state 29
+    FLOAT_TYPE      shift and go to state 28
+
+    tipo                           shift and go to state 27
+
+state 21
+
+    (6) nextId -> ID COMMA . nextId
+    (5) nextId -> . ID
+    (6) nextId -> . ID COMMA nextId
+
+    ID              shift and go to state 11
+
+    nextId                         shift and go to state 30
+
+state 22
+
+    (9) bloque -> LBRACE nextStatuto RBRACE .
+
+    ELSE            reduce using rule 9 (bloque -> LBRACE nextStatuto RBRACE .)
+    SEMICOLON       reduce using rule 9 (bloque -> LBRACE nextStatuto RBRACE .)
+    $end            reduce using rule 9 (bloque -> LBRACE nextStatuto RBRACE .)
+
+
+state 23
+
+    (10) nextStatuto -> estatuto nextStatuto .
+
+    RBRACE          reduce using rule 10 (nextStatuto -> estatuto nextStatuto .)
+
+
+state 24
+
+    (18) assign -> ID ASSIGN . expresion SEMICOLON
+    (42) expresion -> . nextExp
+    (43) nextExp -> . exp GREATER_THAN exp
+    (44) nextExp -> . exp LESS_THAN exp
+    (45) nextExp -> . exp LESS_GREAT exp
+    (46) nextExp -> . exp
+    (38) exp -> . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    expresion                      shift and go to state 41
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    nextExp                        shift and go to state 34
+    termino                        shift and go to state 31
+    exp                            shift and go to state 44
+    factor                         shift and go to state 37
+    cteExp                         shift and go to state 36
+
+state 25
+
+    (19) print -> PRINT LPAREN . nextPrintExp nextPrint RPAREN SEMICOLON
+    (20) nextPrintExp -> . expresion
+    (21) nextPrintExp -> . CTE_STRING
+    (42) expresion -> . nextExp
+    (43) nextExp -> . exp GREATER_THAN exp
+    (44) nextExp -> . exp LESS_THAN exp
+    (45) nextExp -> . exp LESS_GREAT exp
+    (46) nextExp -> . exp
+    (38) exp -> . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    CTE_STRING      shift and go to state 45
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    expresion                      shift and go to state 47
+    cteExp                         shift and go to state 36
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    nextExp                        shift and go to state 34
+    termino                        shift and go to state 31
+    exp                            shift and go to state 44
+    factor                         shift and go to state 37
+    nextPrintExp                   shift and go to state 46
+
+state 26
+
+    (15) condition -> IF LPAREN . expresion RPAREN bloque elseBlock SEMICOLON
+    (42) expresion -> . nextExp
+    (43) nextExp -> . exp GREATER_THAN exp
+    (44) nextExp -> . exp LESS_THAN exp
+    (45) nextExp -> . exp LESS_GREAT exp
+    (46) nextExp -> . exp
+    (38) exp -> . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    expresion                      shift and go to state 48
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    nextExp                        shift and go to state 34
+    termino                        shift and go to state 31
+    exp                            shift and go to state 44
+    factor                         shift and go to state 37
+    cteExp                         shift and go to state 36
+
+state 27
+
+    (4) allVars -> nextId COLON tipo . SEMICOLON nextVar
+
+    SEMICOLON       shift and go to state 49
+
+
+state 28
+
+    (25) tipo -> FLOAT_TYPE .
+
+    SEMICOLON       reduce using rule 25 (tipo -> FLOAT_TYPE .)
+
+
+state 29
+
+    (24) tipo -> INT_TYPE .
+
+    SEMICOLON       reduce using rule 24 (tipo -> INT_TYPE .)
+
+
+state 30
+
+    (6) nextId -> ID COMMA nextId .
+
+    COLON           reduce using rule 6 (nextId -> ID COMMA nextId .)
+
+
+state 31
+
+    (38) exp -> termino . nextTerm
+    (39) nextTerm -> . PLUS termino nextTerm
+    (40) nextTerm -> . MINUS termino nextTerm
+    (41) nextTerm -> .
+
+    PLUS            shift and go to state 51
+    MINUS           shift and go to state 52
+    GREATER_THAN    reduce using rule 41 (nextTerm -> .)
+    LESS_THAN       reduce using rule 41 (nextTerm -> .)
+    LESS_GREAT      reduce using rule 41 (nextTerm -> .)
+    SEMICOLON       reduce using rule 41 (nextTerm -> .)
+    COMMA           reduce using rule 41 (nextTerm -> .)
+    RPAREN          reduce using rule 41 (nextTerm -> .)
+
+    nextTerm                       shift and go to state 50
+
+state 32
+
+    (33) cteExp -> MINUS . varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    varCte                         shift and go to state 53
+
+state 33
+
+    (34) termino -> nextFactor .
+
+    PLUS            reduce using rule 34 (termino -> nextFactor .)
+    MINUS           reduce using rule 34 (termino -> nextFactor .)
+    SEMICOLON       reduce using rule 34 (termino -> nextFactor .)
+    COMMA           reduce using rule 34 (termino -> nextFactor .)
+    RPAREN          reduce using rule 34 (termino -> nextFactor .)
+    GREATER_THAN    reduce using rule 34 (termino -> nextFactor .)
+    LESS_THAN       reduce using rule 34 (termino -> nextFactor .)
+    LESS_GREAT      reduce using rule 34 (termino -> nextFactor .)
+
+
+state 34
+
+    (42) expresion -> nextExp .
+
+    RPAREN          reduce using rule 42 (expresion -> nextExp .)
+    SEMICOLON       reduce using rule 42 (expresion -> nextExp .)
+    COMMA           reduce using rule 42 (expresion -> nextExp .)
+
+
+state 35
+
+    (32) cteExp -> PLUS . varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    varCte                         shift and go to state 54
+
+state 36
+
+    (30) factor -> cteExp .
+
+    DIV             reduce using rule 30 (factor -> cteExp .)
+    MULT            reduce using rule 30 (factor -> cteExp .)
+    PLUS            reduce using rule 30 (factor -> cteExp .)
+    MINUS           reduce using rule 30 (factor -> cteExp .)
+    GREATER_THAN    reduce using rule 30 (factor -> cteExp .)
+    LESS_THAN       reduce using rule 30 (factor -> cteExp .)
+    LESS_GREAT      reduce using rule 30 (factor -> cteExp .)
+    SEMICOLON       reduce using rule 30 (factor -> cteExp .)
+    COMMA           reduce using rule 30 (factor -> cteExp .)
+    RPAREN          reduce using rule 30 (factor -> cteExp .)
+
+
+state 37
+
+    (35) nextFactor -> factor .
+    (36) nextFactor -> factor . DIV termino
+    (37) nextFactor -> factor . MULT termino
+
+    PLUS            reduce using rule 35 (nextFactor -> factor .)
+    MINUS           reduce using rule 35 (nextFactor -> factor .)
+    SEMICOLON       reduce using rule 35 (nextFactor -> factor .)
+    COMMA           reduce using rule 35 (nextFactor -> factor .)
+    RPAREN          reduce using rule 35 (nextFactor -> factor .)
+    GREATER_THAN    reduce using rule 35 (nextFactor -> factor .)
+    LESS_THAN       reduce using rule 35 (nextFactor -> factor .)
+    LESS_GREAT      reduce using rule 35 (nextFactor -> factor .)
+    DIV             shift and go to state 55
+    MULT            shift and go to state 56
+
+
+state 38
+
+    (31) cteExp -> varCte .
+
+    DIV             reduce using rule 31 (cteExp -> varCte .)
+    MULT            reduce using rule 31 (cteExp -> varCte .)
+    PLUS            reduce using rule 31 (cteExp -> varCte .)
+    MINUS           reduce using rule 31 (cteExp -> varCte .)
+    SEMICOLON       reduce using rule 31 (cteExp -> varCte .)
+    COMMA           reduce using rule 31 (cteExp -> varCte .)
+    RPAREN          reduce using rule 31 (cteExp -> varCte .)
+    GREATER_THAN    reduce using rule 31 (cteExp -> varCte .)
+    LESS_THAN       reduce using rule 31 (cteExp -> varCte .)
+    LESS_GREAT      reduce using rule 31 (cteExp -> varCte .)
+
+
+state 39
+
+    (29) factor -> LPAREN . expresion RPAREN
+    (42) expresion -> . nextExp
+    (43) nextExp -> . exp GREATER_THAN exp
+    (44) nextExp -> . exp LESS_THAN exp
+    (45) nextExp -> . exp LESS_GREAT exp
+    (46) nextExp -> . exp
+    (38) exp -> . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    expresion                      shift and go to state 57
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    nextExp                        shift and go to state 34
+    termino                        shift and go to state 31
+    exp                            shift and go to state 44
+    factor                         shift and go to state 37
+    cteExp                         shift and go to state 36
+
+state 40
+
+    (26) varCte -> ID .
+
+    DIV             reduce using rule 26 (varCte -> ID .)
+    MULT            reduce using rule 26 (varCte -> ID .)
+    PLUS            reduce using rule 26 (varCte -> ID .)
+    MINUS           reduce using rule 26 (varCte -> ID .)
+    GREATER_THAN    reduce using rule 26 (varCte -> ID .)
+    LESS_THAN       reduce using rule 26 (varCte -> ID .)
+    LESS_GREAT      reduce using rule 26 (varCte -> ID .)
+    SEMICOLON       reduce using rule 26 (varCte -> ID .)
+    COMMA           reduce using rule 26 (varCte -> ID .)
+    RPAREN          reduce using rule 26 (varCte -> ID .)
+
+
+state 41
+
+    (18) assign -> ID ASSIGN expresion . SEMICOLON
+
+    SEMICOLON       shift and go to state 58
+
+
+state 42
+
+    (27) varCte -> INT .
+
+    DIV             reduce using rule 27 (varCte -> INT .)
+    MULT            reduce using rule 27 (varCte -> INT .)
+    PLUS            reduce using rule 27 (varCte -> INT .)
+    MINUS           reduce using rule 27 (varCte -> INT .)
+    GREATER_THAN    reduce using rule 27 (varCte -> INT .)
+    LESS_THAN       reduce using rule 27 (varCte -> INT .)
+    LESS_GREAT      reduce using rule 27 (varCte -> INT .)
+    SEMICOLON       reduce using rule 27 (varCte -> INT .)
+    COMMA           reduce using rule 27 (varCte -> INT .)
+    RPAREN          reduce using rule 27 (varCte -> INT .)
+
+
+state 43
+
+    (28) varCte -> FLOAT .
+
+    DIV             reduce using rule 28 (varCte -> FLOAT .)
+    MULT            reduce using rule 28 (varCte -> FLOAT .)
+    PLUS            reduce using rule 28 (varCte -> FLOAT .)
+    MINUS           reduce using rule 28 (varCte -> FLOAT .)
+    GREATER_THAN    reduce using rule 28 (varCte -> FLOAT .)
+    LESS_THAN       reduce using rule 28 (varCte -> FLOAT .)
+    LESS_GREAT      reduce using rule 28 (varCte -> FLOAT .)
+    SEMICOLON       reduce using rule 28 (varCte -> FLOAT .)
+    COMMA           reduce using rule 28 (varCte -> FLOAT .)
+    RPAREN          reduce using rule 28 (varCte -> FLOAT .)
+
+
+state 44
+
+    (43) nextExp -> exp . GREATER_THAN exp
+    (44) nextExp -> exp . LESS_THAN exp
+    (45) nextExp -> exp . LESS_GREAT exp
+    (46) nextExp -> exp .
+
+    GREATER_THAN    shift and go to state 59
+    LESS_THAN       shift and go to state 60
+    LESS_GREAT      shift and go to state 61
+    RPAREN          reduce using rule 46 (nextExp -> exp .)
+    COMMA           reduce using rule 46 (nextExp -> exp .)
+    SEMICOLON       reduce using rule 46 (nextExp -> exp .)
+
+
+state 45
+
+    (21) nextPrintExp -> CTE_STRING .
+
+    COMMA           reduce using rule 21 (nextPrintExp -> CTE_STRING .)
+    RPAREN          reduce using rule 21 (nextPrintExp -> CTE_STRING .)
+
+
+state 46
+
+    (19) print -> PRINT LPAREN nextPrintExp . nextPrint RPAREN SEMICOLON
+    (22) nextPrint -> . COMMA nextPrintExp nextPrint
+    (23) nextPrint -> .
+
+    COMMA           shift and go to state 63
+    RPAREN          reduce using rule 23 (nextPrint -> .)
+
+    nextPrint                      shift and go to state 62
+
+state 47
+
+    (20) nextPrintExp -> expresion .
+
+    COMMA           reduce using rule 20 (nextPrintExp -> expresion .)
+    RPAREN          reduce using rule 20 (nextPrintExp -> expresion .)
+
+
+state 48
+
+    (15) condition -> IF LPAREN expresion . RPAREN bloque elseBlock SEMICOLON
+
+    RPAREN          shift and go to state 64
+
+
+state 49
+
+    (4) allVars -> nextId COLON tipo SEMICOLON . nextVar
+    (7) nextVar -> . allVars
+    (8) nextVar -> .
+    (4) allVars -> . nextId COLON tipo SEMICOLON nextVar
+    (5) nextId -> . ID
+    (6) nextId -> . ID COMMA nextId
+
+    LBRACE          reduce using rule 8 (nextVar -> .)
+    ID              shift and go to state 11
+
+    nextVar                        shift and go to state 66
+    nextId                         shift and go to state 10
+    allVars                        shift and go to state 65
+
+state 50
+
+    (38) exp -> termino nextTerm .
+
+    GREATER_THAN    reduce using rule 38 (exp -> termino nextTerm .)
+    LESS_THAN       reduce using rule 38 (exp -> termino nextTerm .)
+    LESS_GREAT      reduce using rule 38 (exp -> termino nextTerm .)
+    RPAREN          reduce using rule 38 (exp -> termino nextTerm .)
+    SEMICOLON       reduce using rule 38 (exp -> termino nextTerm .)
+    COMMA           reduce using rule 38 (exp -> termino nextTerm .)
+
+
+state 51
+
+    (39) nextTerm -> PLUS . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    cteExp                         shift and go to state 36
+    factor                         shift and go to state 37
+    termino                        shift and go to state 67
+
+state 52
+
+    (40) nextTerm -> MINUS . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    cteExp                         shift and go to state 36
+    factor                         shift and go to state 37
+    termino                        shift and go to state 68
+
+state 53
+
+    (33) cteExp -> MINUS varCte .
+
+    DIV             reduce using rule 33 (cteExp -> MINUS varCte .)
+    MULT            reduce using rule 33 (cteExp -> MINUS varCte .)
+    PLUS            reduce using rule 33 (cteExp -> MINUS varCte .)
+    MINUS           reduce using rule 33 (cteExp -> MINUS varCte .)
+    SEMICOLON       reduce using rule 33 (cteExp -> MINUS varCte .)
+    COMMA           reduce using rule 33 (cteExp -> MINUS varCte .)
+    RPAREN          reduce using rule 33 (cteExp -> MINUS varCte .)
+    GREATER_THAN    reduce using rule 33 (cteExp -> MINUS varCte .)
+    LESS_THAN       reduce using rule 33 (cteExp -> MINUS varCte .)
+    LESS_GREAT      reduce using rule 33 (cteExp -> MINUS varCte .)
+
+
+state 54
+
+    (32) cteExp -> PLUS varCte .
+
+    DIV             reduce using rule 32 (cteExp -> PLUS varCte .)
+    MULT            reduce using rule 32 (cteExp -> PLUS varCte .)
+    PLUS            reduce using rule 32 (cteExp -> PLUS varCte .)
+    MINUS           reduce using rule 32 (cteExp -> PLUS varCte .)
+    SEMICOLON       reduce using rule 32 (cteExp -> PLUS varCte .)
+    COMMA           reduce using rule 32 (cteExp -> PLUS varCte .)
+    RPAREN          reduce using rule 32 (cteExp -> PLUS varCte .)
+    GREATER_THAN    reduce using rule 32 (cteExp -> PLUS varCte .)
+    LESS_THAN       reduce using rule 32 (cteExp -> PLUS varCte .)
+    LESS_GREAT      reduce using rule 32 (cteExp -> PLUS varCte .)
+
+
+state 55
+
+    (36) nextFactor -> factor DIV . termino
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    cteExp                         shift and go to state 36
+    factor                         shift and go to state 37
+    termino                        shift and go to state 69
+
+state 56
+
+    (37) nextFactor -> factor MULT . termino
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    cteExp                         shift and go to state 36
+    factor                         shift and go to state 37
+    termino                        shift and go to state 70
+
+state 57
+
+    (29) factor -> LPAREN expresion . RPAREN
+
+    RPAREN          shift and go to state 71
+
+
+state 58
+
+    (18) assign -> ID ASSIGN expresion SEMICOLON .
+
+    ID              reduce using rule 18 (assign -> ID ASSIGN expresion SEMICOLON .)
+    IF              reduce using rule 18 (assign -> ID ASSIGN expresion SEMICOLON .)
+    PRINT           reduce using rule 18 (assign -> ID ASSIGN expresion SEMICOLON .)
+    RBRACE          reduce using rule 18 (assign -> ID ASSIGN expresion SEMICOLON .)
+
+
+state 59
+
+    (43) nextExp -> exp GREATER_THAN . exp
+    (38) exp -> . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    termino                        shift and go to state 31
+    exp                            shift and go to state 72
+    factor                         shift and go to state 37
+    cteExp                         shift and go to state 36
+
+state 60
+
+    (44) nextExp -> exp LESS_THAN . exp
+    (38) exp -> . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    termino                        shift and go to state 31
+    exp                            shift and go to state 73
+    factor                         shift and go to state 37
+    cteExp                         shift and go to state 36
+
+state 61
+
+    (45) nextExp -> exp LESS_GREAT . exp
+    (38) exp -> . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    termino                        shift and go to state 31
+    exp                            shift and go to state 74
+    factor                         shift and go to state 37
+    cteExp                         shift and go to state 36
+
+state 62
+
+    (19) print -> PRINT LPAREN nextPrintExp nextPrint . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 75
+
+
+state 63
+
+    (22) nextPrint -> COMMA . nextPrintExp nextPrint
+    (20) nextPrintExp -> . expresion
+    (21) nextPrintExp -> . CTE_STRING
+    (42) expresion -> . nextExp
+    (43) nextExp -> . exp GREATER_THAN exp
+    (44) nextExp -> . exp LESS_THAN exp
+    (45) nextExp -> . exp LESS_GREAT exp
+    (46) nextExp -> . exp
+    (38) exp -> . termino nextTerm
+    (34) termino -> . nextFactor
+    (35) nextFactor -> . factor
+    (36) nextFactor -> . factor DIV termino
+    (37) nextFactor -> . factor MULT termino
+    (29) factor -> . LPAREN expresion RPAREN
+    (30) factor -> . cteExp
+    (31) cteExp -> . varCte
+    (32) cteExp -> . PLUS varCte
+    (33) cteExp -> . MINUS varCte
+    (26) varCte -> . ID
+    (27) varCte -> . INT
+    (28) varCte -> . FLOAT
+
+    CTE_STRING      shift and go to state 45
+    LPAREN          shift and go to state 39
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 32
+    ID              shift and go to state 40
+    INT             shift and go to state 42
+    FLOAT           shift and go to state 43
+
+    expresion                      shift and go to state 47
+    cteExp                         shift and go to state 36
+    nextFactor                     shift and go to state 33
+    varCte                         shift and go to state 38
+    nextExp                        shift and go to state 34
+    termino                        shift and go to state 31
+    exp                            shift and go to state 44
+    factor                         shift and go to state 37
+    nextPrintExp                   shift and go to state 76
+
+state 64
+
+    (15) condition -> IF LPAREN expresion RPAREN . bloque elseBlock SEMICOLON
+    (9) bloque -> . LBRACE nextStatuto RBRACE
+
+    LBRACE          shift and go to state 7
+
+    bloque                         shift and go to state 77
+
+state 65
+
+    (7) nextVar -> allVars .
+
+    LBRACE          reduce using rule 7 (nextVar -> allVars .)
+
+
+state 66
+
+    (4) allVars -> nextId COLON tipo SEMICOLON nextVar .
+
+    LBRACE          reduce using rule 4 (allVars -> nextId COLON tipo SEMICOLON nextVar .)
+
+
+state 67
+
+    (39) nextTerm -> PLUS termino . nextTerm
+    (39) nextTerm -> . PLUS termino nextTerm
+    (40) nextTerm -> . MINUS termino nextTerm
+    (41) nextTerm -> .
+
+    PLUS            shift and go to state 51
+    MINUS           shift and go to state 52
+    GREATER_THAN    reduce using rule 41 (nextTerm -> .)
+    LESS_THAN       reduce using rule 41 (nextTerm -> .)
+    LESS_GREAT      reduce using rule 41 (nextTerm -> .)
+    SEMICOLON       reduce using rule 41 (nextTerm -> .)
+    COMMA           reduce using rule 41 (nextTerm -> .)
+    RPAREN          reduce using rule 41 (nextTerm -> .)
+
+    nextTerm                       shift and go to state 78
+
+state 68
+
+    (40) nextTerm -> MINUS termino . nextTerm
+    (39) nextTerm -> . PLUS termino nextTerm
+    (40) nextTerm -> . MINUS termino nextTerm
+    (41) nextTerm -> .
+
+    PLUS            shift and go to state 51
+    MINUS           shift and go to state 52
+    GREATER_THAN    reduce using rule 41 (nextTerm -> .)
+    LESS_THAN       reduce using rule 41 (nextTerm -> .)
+    LESS_GREAT      reduce using rule 41 (nextTerm -> .)
+    SEMICOLON       reduce using rule 41 (nextTerm -> .)
+    COMMA           reduce using rule 41 (nextTerm -> .)
+    RPAREN          reduce using rule 41 (nextTerm -> .)
+
+    nextTerm                       shift and go to state 79
+
+state 69
+
+    (36) nextFactor -> factor DIV termino .
+
+    PLUS            reduce using rule 36 (nextFactor -> factor DIV termino .)
+    MINUS           reduce using rule 36 (nextFactor -> factor DIV termino .)
+    SEMICOLON       reduce using rule 36 (nextFactor -> factor DIV termino .)
+    COMMA           reduce using rule 36 (nextFactor -> factor DIV termino .)
+    RPAREN          reduce using rule 36 (nextFactor -> factor DIV termino .)
+    GREATER_THAN    reduce using rule 36 (nextFactor -> factor DIV termino .)
+    LESS_THAN       reduce using rule 36 (nextFactor -> factor DIV termino .)
+    LESS_GREAT      reduce using rule 36 (nextFactor -> factor DIV termino .)
+
+
+state 70
+
+    (37) nextFactor -> factor MULT termino .
+
+    PLUS            reduce using rule 37 (nextFactor -> factor MULT termino .)
+    MINUS           reduce using rule 37 (nextFactor -> factor MULT termino .)
+    SEMICOLON       reduce using rule 37 (nextFactor -> factor MULT termino .)
+    COMMA           reduce using rule 37 (nextFactor -> factor MULT termino .)
+    RPAREN          reduce using rule 37 (nextFactor -> factor MULT termino .)
+    GREATER_THAN    reduce using rule 37 (nextFactor -> factor MULT termino .)
+    LESS_THAN       reduce using rule 37 (nextFactor -> factor MULT termino .)
+    LESS_GREAT      reduce using rule 37 (nextFactor -> factor MULT termino .)
+
+
+state 71
+
+    (29) factor -> LPAREN expresion RPAREN .
+
+    DIV             reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    MULT            reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    PLUS            reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    MINUS           reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    GREATER_THAN    reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    LESS_THAN       reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    LESS_GREAT      reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    SEMICOLON       reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    COMMA           reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+    RPAREN          reduce using rule 29 (factor -> LPAREN expresion RPAREN .)
+
+
+state 72
+
+    (43) nextExp -> exp GREATER_THAN exp .
+
+    RPAREN          reduce using rule 43 (nextExp -> exp GREATER_THAN exp .)
+    COMMA           reduce using rule 43 (nextExp -> exp GREATER_THAN exp .)
+    SEMICOLON       reduce using rule 43 (nextExp -> exp GREATER_THAN exp .)
+
+
+state 73
+
+    (44) nextExp -> exp LESS_THAN exp .
+
+    RPAREN          reduce using rule 44 (nextExp -> exp LESS_THAN exp .)
+    COMMA           reduce using rule 44 (nextExp -> exp LESS_THAN exp .)
+    SEMICOLON       reduce using rule 44 (nextExp -> exp LESS_THAN exp .)
+
+
+state 74
+
+    (45) nextExp -> exp LESS_GREAT exp .
+
+    RPAREN          reduce using rule 45 (nextExp -> exp LESS_GREAT exp .)
+    COMMA           reduce using rule 45 (nextExp -> exp LESS_GREAT exp .)
+    SEMICOLON       reduce using rule 45 (nextExp -> exp LESS_GREAT exp .)
+
+
+state 75
+
+    (19) print -> PRINT LPAREN nextPrintExp nextPrint RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 80
+
+
+state 76
+
+    (22) nextPrint -> COMMA nextPrintExp . nextPrint
+    (22) nextPrint -> . COMMA nextPrintExp nextPrint
+    (23) nextPrint -> .
+
+    COMMA           shift and go to state 63
+    RPAREN          reduce using rule 23 (nextPrint -> .)
+
+    nextPrint                      shift and go to state 81
+
+state 77
+
+    (15) condition -> IF LPAREN expresion RPAREN bloque . elseBlock SEMICOLON
+    (16) elseBlock -> . ELSE bloque
+    (17) elseBlock -> .
+
+    ELSE            shift and go to state 83
+    SEMICOLON       reduce using rule 17 (elseBlock -> .)
+
+    elseBlock                      shift and go to state 82
+
+state 78
+
+    (39) nextTerm -> PLUS termino nextTerm .
+
+    GREATER_THAN    reduce using rule 39 (nextTerm -> PLUS termino nextTerm .)
+    LESS_THAN       reduce using rule 39 (nextTerm -> PLUS termino nextTerm .)
+    LESS_GREAT      reduce using rule 39 (nextTerm -> PLUS termino nextTerm .)
+    SEMICOLON       reduce using rule 39 (nextTerm -> PLUS termino nextTerm .)
+    COMMA           reduce using rule 39 (nextTerm -> PLUS termino nextTerm .)
+    RPAREN          reduce using rule 39 (nextTerm -> PLUS termino nextTerm .)
+
+
+state 79
+
+    (40) nextTerm -> MINUS termino nextTerm .
+
+    GREATER_THAN    reduce using rule 40 (nextTerm -> MINUS termino nextTerm .)
+    LESS_THAN       reduce using rule 40 (nextTerm -> MINUS termino nextTerm .)
+    LESS_GREAT      reduce using rule 40 (nextTerm -> MINUS termino nextTerm .)
+    SEMICOLON       reduce using rule 40 (nextTerm -> MINUS termino nextTerm .)
+    COMMA           reduce using rule 40 (nextTerm -> MINUS termino nextTerm .)
+    RPAREN          reduce using rule 40 (nextTerm -> MINUS termino nextTerm .)
+
+
+state 80
+
+    (19) print -> PRINT LPAREN nextPrintExp nextPrint RPAREN SEMICOLON .
+
+    ID              reduce using rule 19 (print -> PRINT LPAREN nextPrintExp nextPrint RPAREN SEMICOLON .)
+    IF              reduce using rule 19 (print -> PRINT LPAREN nextPrintExp nextPrint RPAREN SEMICOLON .)
+    PRINT           reduce using rule 19 (print -> PRINT LPAREN nextPrintExp nextPrint RPAREN SEMICOLON .)
+    RBRACE          reduce using rule 19 (print -> PRINT LPAREN nextPrintExp nextPrint RPAREN SEMICOLON .)
+
+
+state 81
+
+    (22) nextPrint -> COMMA nextPrintExp nextPrint .
+
+    RPAREN          reduce using rule 22 (nextPrint -> COMMA nextPrintExp nextPrint .)
+
+
+state 82
+
+    (15) condition -> IF LPAREN expresion RPAREN bloque elseBlock . SEMICOLON
+
+    SEMICOLON       shift and go to state 84
+
+
+state 83
+
+    (16) elseBlock -> ELSE . bloque
+    (9) bloque -> . LBRACE nextStatuto RBRACE
+
+    LBRACE          shift and go to state 7
+
+    bloque                         shift and go to state 85
+
+state 84
+
+    (15) condition -> IF LPAREN expresion RPAREN bloque elseBlock SEMICOLON .
+
+    ID              reduce using rule 15 (condition -> IF LPAREN expresion RPAREN bloque elseBlock SEMICOLON .)
+    IF              reduce using rule 15 (condition -> IF LPAREN expresion RPAREN bloque elseBlock SEMICOLON .)
+    PRINT           reduce using rule 15 (condition -> IF LPAREN expresion RPAREN bloque elseBlock SEMICOLON .)
+    RBRACE          reduce using rule 15 (condition -> IF LPAREN expresion RPAREN bloque elseBlock SEMICOLON .)
+
+
+state 85
+
+    (16) elseBlock -> ELSE bloque .
+
+    SEMICOLON       reduce using rule 16 (elseBlock -> ELSE bloque .)
+
