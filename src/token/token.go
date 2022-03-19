@@ -11,6 +11,7 @@ type Token struct {
 	LineNumber      uint32
 	CharacterNumber uint32
 	Literal         string
+	IsKeyword       bool
 }
 
 type Keyword struct {
@@ -18,11 +19,9 @@ type Keyword struct {
 	Type  Type
 }
 
-var complexKeywords = []Keyword{
-	Keyword{Regex: "[a-zA-Z](a-zA-Z]|[0-9])*", Type: ID},
-	Keyword{Regex: "[+-]?([0-9]*[.])[0-9]+", Type: FLOAT},
-	Keyword{Regex: "[-+]?[0-9]+", Type: INT},
-}
+var IDENT = Keyword{Regex: "[a-zA-Z](a-zA-Z]|[0-9])*", Type: ID}
+var FLOAT_IDENT = Keyword{Regex: "[+-]?([0-9]*[.])[0-9]+", Type: FLOAT}
+var INT_IDENT = Keyword{Regex: "[-+]?[0-9]+", Type: INT}
 
 var simpleKeywords = map[string]Keyword{
 	"var":     Keyword{Type: VAR},
@@ -35,19 +34,13 @@ var simpleKeywords = map[string]Keyword{
 	"if":      Keyword{Type: IF},
 	"else":    Keyword{Type: ELSE},
 	"print":   Keyword{Type: PRINT},
-	"return":  Keyword{Type: RETURN},
 }
 
 const (
-	FUNCTION = "FUNCTION"
-	LET      = "LET"
-	TRUE     = "TRUE"
-	FALSE    = "FALSE"
-	IF       = "IF"
-	ELSE     = "ELSE"
-	RETURN   = "RETURN"
-	DIGIT    = "DIGIT"
-	NUMBER   = "NUMBER"
+	TRUE  = "TRUE"
+	FALSE = "FALSE"
+	IF    = "IF"
+	ELSE  = "ELSE"
 
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
@@ -70,10 +63,11 @@ const (
 	ASSIGN    = "="
 	COLON     = ":"
 
-	PROGRAM = "PROGRAM"
-	VAR     = "VAR"
+	PROGRAM = "program"
+	VAR     = "var"
 	ID      = "ID"
-	PRINT   = "PRINT"
+	PRINT   = "print"
+	STRING  = "STRING"
 
 	INT_TYPE   = "INT_TYPE"
 	FLOAT_TYPE = "FLOAT_TYPE"
@@ -81,14 +75,13 @@ const (
 	FLOAT      = "FLOAT"
 )
 
-func LookUpComplexKeywords(potentialKeyword string) Type {
-	for _, keyword := range complexKeywords {
-		valid, err := regexp.MatchString(keyword.Regex, potentialKeyword)
-		if valid && err == nil {
-			return keyword.Type
-		}
+func LookupIdentifier(keyword Keyword, potentialKeyword string) Type {
+	valid, err := regexp.MatchString(keyword.Regex, potentialKeyword)
+	if valid && err == nil {
+		return keyword.Type
 	}
 	return ILLEGAL
+
 }
 
 func LookupSimpleKeyword(ident string) Type {
