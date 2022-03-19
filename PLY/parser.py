@@ -108,7 +108,7 @@ def p_nextTerm(p):
 
 
 def p_error(p):
-    print(p.value)
+    print("syntax error, at char: ", p.value[0])
 
 def p_expresion(p):
     '''expresion : nextExp'''

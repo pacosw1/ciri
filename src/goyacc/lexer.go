@@ -110,7 +110,7 @@ func (l *Lexer) GetError() error {
 }
 
 func (l *Lexer) Error(s string) {
-	s = fmt.Sprintf(" \n %s \n near  %s", s, l.formatError())
+	s = fmt.Sprintf(" \n %s \n  %s", s, l.formatError())
 	l.err = errors.New(s)
 }
 
@@ -127,12 +127,10 @@ func (l *Lexer) formatError() string {
 	for pos < len(tokens) {
 		tok = tokens[pos]
 		output += tok.Literal + " "
-
-		tokens = tokens[:len(tokens)-1]
 		pos += 1
 	}
 
-	return fmt.Sprintf("%s %s <--  \n in line: %d", l.lastReadToken.Literal, output, tok.LineNumber)
+	return fmt.Sprintf("at %s'%s' <--  \n in line: %d \n '%s' should not be here", output, l.lastReadToken.Literal, tok.LineNumber, l.lastReadToken.Literal)
 }
 
 // Lookups

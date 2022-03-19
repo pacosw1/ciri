@@ -10,12 +10,7 @@ func TestParseEmptyProgramWithVars(t *testing.T) {
 		
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -28,12 +23,7 @@ func TestParseProgramNoVars(t *testing.T) {
 			if (x > 100.99) {} else {};
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -47,12 +37,7 @@ func TestParseEmptyIf(t *testing.T) {
 			if (x > 100.99) {};
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -62,15 +47,10 @@ func TestParseEmptyIf(t *testing.T) {
 func TestParseEmptyIfElse(t *testing.T) {
 	input := `
 		program testRun : var x, y: int; z, f: float; {
-			if (x >< 100.99) {} else {};
+			if (x > 100.99) {} else {};
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -87,12 +67,7 @@ func TestParseNotEmptyIfElse(t *testing.T) {
 			};
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -111,12 +86,7 @@ func TestParseNestedConditionals(t *testing.T) {
 			};
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -147,12 +117,7 @@ func TestParseComplex(t *testing.T) {
 			print(z > y);
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -166,12 +131,7 @@ func TestParseValidNumericalAssignment(t *testing.T) {
 			y = 10.10;
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -185,12 +145,7 @@ func TestParseValid(t *testing.T) {
 			y = 10.10;
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -205,12 +160,7 @@ func TestParseValidPrintStatements(t *testing.T) {
 			print(x,y,"hello world");
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -221,17 +171,31 @@ func TestParseValidExpressionAssignment(t *testing.T) {
 	input := `
 		program testRun : {
 			x = 10 + x / n * 1;
-			y = 10.10;
+			y = 10;
 		}
 	`
-	result, err := Parse(input)
-
-	for _, r := range result {
-		t.Logf(r.Literal)
-	}
-
+	_, err := Parse(input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
+}
+
+func TestThrowError(t *testing.T) {
+	input := `
+		program testRun : {
+			x = 10 +=- / n * 1;
+			y = 10
+		}
+	`
+	_, err := Parse(input)
+
+	if err != nil {
+		t.Logf(err.Error())
+
+	}
+
+	if err == nil {
+		t.Fatalf("should not compile")
+	}
 }

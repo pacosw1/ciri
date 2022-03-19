@@ -66,7 +66,6 @@ estatuto: assign
 	| print
 
 
-
 condition: IF '(' expresion ')' bloque elseBlock ';'
 elseBlock: ELSE bloque
 	 |
@@ -98,15 +97,15 @@ nextFactor: factor
 	  | factor '/' termino
 	  | factor '*' termino
 
-exp: termino '+' otherTerm
-	| termino '-' otherTerm
+exp: termino nextTerm
 
-otherTerm: termino
+nextTerm: '+' termino nextTerm
+	 | '-' termino nextTerm
 	 |
 
-expresion: exp
-	 | nextExp
+expresion: nextExp
 
 nextExp: exp '>' exp
        | exp '<' exp
+	   | exp
 
